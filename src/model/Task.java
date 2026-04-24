@@ -7,17 +7,16 @@ public class Task {
 
     private int id;
     private String description;
-    private String staus;
+    private String status;
     private LocalDateTime createdAt;
     private LocalDateTime updateAt;
 
-    public Task(int id, String description) {
-        this.id = id;
+    public Task(String description) {
         this.description = description;
+        status = "todo";
         this.createdAt = LocalDateTime.now();
+        this.updateAt = LocalDateTime.now();
     }
-
-    // logica para incrementar um id.
 
     @Override
     public boolean equals(Object o) {
@@ -48,11 +47,11 @@ public class Task {
     }
 
     public String getStaus() {
-        return staus;
+        return status;
     }
 
     public void setStaus(String staus) {
-        this.staus = staus;
+        this.status = staus;
     }
 
     public LocalDateTime getCreatedAt() {
@@ -76,7 +75,7 @@ public class Task {
         return "Task{" +
                 "id=" + id +
                 ", description='" + description + '\'' +
-                ", staus='" + staus + '\'' +
+                ", staus='" + status + '\'' +
                 ", createdAt=" + createdAt +
                 ", updateAt=" + updateAt +
                 '}';
