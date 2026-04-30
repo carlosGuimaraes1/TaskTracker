@@ -10,8 +10,9 @@ public class TaskService {
     List<Task> tasks = new ArrayList<>();
 
     public void addTask(String description) {
-        tasks.add(new Task(description));
-        // id
+        tasks.add(new Task(description, nextId()));
+        System.out.println("Task added");
+        listAllTask();
         // save
     }
 
@@ -71,5 +72,14 @@ public class TaskService {
                 System.out.println(task);
             }
         }
+    }
+    public int nextId(){
+        int nextId = 0;
+        for (Task task : tasks){
+            if (task.getId()>nextId){
+                nextId =task.getId();
+            }
+        }
+        return nextId +1;
     }
 }

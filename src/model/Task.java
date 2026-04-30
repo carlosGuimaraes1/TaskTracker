@@ -1,6 +1,7 @@
 package model;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 public class Task {
@@ -11,9 +12,10 @@ public class Task {
     private LocalDateTime createdAt;
     private LocalDateTime updateAt;
 
-    public Task(String description) {
+    public Task(String description, int id) {
         this.description = description;
         status = "todo";
+        this.id = id;
         this.createdAt = LocalDateTime.now();
         this.updateAt = LocalDateTime.now();
     }
@@ -76,8 +78,8 @@ public class Task {
                 "id=" + id +
                 ", description='" + description + '\'' +
                 ", staus='" + status + '\'' +
-                ", createdAt=" + createdAt +
-                ", updateAt=" + updateAt +
+                ", createdAt=" + createdAt.format(DateTimeFormatter.ISO_LOCAL_DATE) +
+                ", updateAt=" + updateAt.format(DateTimeFormatter.ISO_DATE_TIME) +
                 '}';
     }
 }
