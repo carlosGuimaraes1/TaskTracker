@@ -91,6 +91,7 @@ mark-in-progress <id>	Set task as in progress
 mark-done <id>	Set task as done
 list	List all tasks
 list done	Filter by status
+```
 📄 Task Structure
 {
   "id": 1,
@@ -99,8 +100,7 @@ list done	Filter by status
   "createdAt": "2026-04-29T10:00:00",
   "updatedAt": "2026-04-29T10:00:00"
 }
-```
-Technical Decisions
+🧠 Technical Decisions
 JSON without external libraries
 
 The project uses manual JSON parsing to reinforce understanding of:
