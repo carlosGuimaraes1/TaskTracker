@@ -48,11 +48,11 @@ public class Task {
         this.description = description;
     }
 
-    public String getStaus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStaus(String staus) {
+    public void getStatus(String staus) {
         this.status = staus;
     }
 

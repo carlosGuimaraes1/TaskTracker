@@ -1,6 +1,7 @@
 package service;
 
 import model.Task;
+import repository.JsonStorage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,12 +9,12 @@ import java.util.List;
 public class TaskService {
 
     List<Task> tasks = new ArrayList<>();
+    JsonStorage js = new JsonStorage();
 
     public void addTask(String description) {
         tasks.add(new Task(description, nextId()));
+        js.saveAll(tasks);
         System.out.println("Task added");
-        listAllTask();
-        // save
     }
 
     public void deleteTask(int id) {
@@ -39,7 +40,7 @@ public class TaskService {
     public void markInProgress(int id) {
         for (Task task : tasks) {
             if (task.getId() == id) {
-                task.setStaus("in-progress");
+                task.getStatus("in-progress");
                 System.out.println("task successfully marked");
                 return;
             }
@@ -50,7 +51,7 @@ public class TaskService {
     public void markIDone(int id) {
         for (Task task : tasks) {
             if (task.getId() == id) {
-                task.setStaus("done");
+                task.getStatus("done");
                 System.out.println("task successfully marked");
                 return;
             }
@@ -68,7 +69,7 @@ public class TaskService {
 
     public void listByStatus(String status) {
         for (Task task : tasks) {
-            if (task.getStaus().equals(status)) {
+            if (task.getStatus().equals(status)) {
                 System.out.println(task);
             }
         }
