@@ -4,6 +4,7 @@ import model.Task;
 import repository.JsonStorage;
 
 import java.io.IOException;
+import java.nio.file.NoSuchFileException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,22 +16,25 @@ public class TaskService {
     public TaskService(){
         try {
             tasks = js.loadAll();
-
+        }catch (NoSuchFileException e){
+            tasks = new ArrayList<>();
         }catch (IOException e){
             System.out.println("Erro loading data " + e.getMessage());
         }
     }
 
     public void addTask(String description) {
-        tasks.add(new Task(description, nextId()));
+        int id = nextId();
+        tasks.add(new Task(description, id));
+        System.out.println("Task added successfully (ID:"+ id+")\n");
         js.saveAll(tasks);
-        System.out.println("Task added");
     }
 
     public void deleteTask(int id) {
         boolean removeIf = tasks.removeIf(task -> task.getId() == id);
         if (removeIf) {
             System.out.println("Task delete");
+            js.saveAll(tasks);
             return;
         }
         throw new IllegalArgumentException("Task not found");
@@ -41,6 +45,7 @@ public class TaskService {
             if (task.getId() == id) {
                 task.setDescription(description);
                 System.out.println("Task updated");
+                js.saveAll(tasks);
                 return;
             }
         }
@@ -52,6 +57,7 @@ public class TaskService {
             if (task.getId() == id) {
                 task.setStatus("in-progress");
                 System.out.println("task successfully marked");
+                js.saveAll(tasks);
                 return;
             }
         }
@@ -63,6 +69,7 @@ public class TaskService {
             if (task.getId() == id) {
                 task.setStatus("done");
                 System.out.println("task successfully marked");
+                js.saveAll(tasks);
                 return;
             }
         }
@@ -74,7 +81,7 @@ public class TaskService {
             System.out.println(tasks);
             return;
         }
-        System.out.println("You have no task");
+        System.out.println("You no have tasks");
     }
 
     public void listByStatus(String status) {

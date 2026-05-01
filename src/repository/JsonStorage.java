@@ -3,7 +3,6 @@ package repository;
 import model.Task;
 
 import java.io.BufferedWriter;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -21,7 +20,7 @@ public class JsonStorage {
                 + ",\"description\":\"" + task.getDescription() + "\""
                 + ",\"status\":\"" + task.getStatus() + "\""
                 + ",\"createdAt\":\"" + task.getCreatedAt() + "\""
-                + ",\"updateAt\":\"" + task.getUpdateAt() + "\""
+                + ",\"updatedAt\":\"" + task.getUpdateAt() + "\""
                 + "}";
         return json;
     }
@@ -29,20 +28,19 @@ public class JsonStorage {
     public void saveAll(List<Task> tasks) {
         StringBuilder sb = new StringBuilder();
         sb.append("[");
-        for (Task task : tasks) {
-            sb.append(taskToJson(task)).append(",");
-            if (task.equals(tasks.get(tasks.size() - 1))) {
-                sb.append(taskToJson(task));
+        for (int i = 0; i < tasks.size(); i++) {
+            sb.append(taskToJson(tasks.get(i)));
+            if (i < tasks.size() - 1) {
+                sb.append(",");
             }
         }
         sb.append("]");
 
         Path path = Paths.get("tasks.json");
 
-        try (FileWriter fw = new FileWriter(path.toFile(), true);
+        try (FileWriter fw = new FileWriter(path.toFile());
              BufferedWriter bw = new BufferedWriter(fw)) {
 
-            if (Files.notExists(path)) Files.createFile(path);
             bw.write(sb.toString());
             bw.newLine();
             bw.flush();
@@ -52,9 +50,9 @@ public class JsonStorage {
     }
 
     public Task taskFromJson(String json) {
-        int startId = json.indexOf("\"id\":");
+        int startId = json.indexOf("\"id\":") + "\"id\":".length();
         int endId = json.indexOf(",", startId);
-        int id = Integer.parseInt(json.substring(endId - 1, endId));
+        int id = Integer.parseInt(json.substring(startId, endId));
 
         int startDescription = json.indexOf("\"description\":") + "\"description\":".length();
         int endDescription = json.indexOf("\"", startDescription + 1);
@@ -68,7 +66,7 @@ public class JsonStorage {
         int endCreated = json.indexOf("\"", startCreated + 1);
         LocalDateTime createdAt = LocalDateTime.parse(json.substring(startCreated + 1, endCreated));
 
-        int startUpdate = json.indexOf("\"updateAt\":") + "\"updateAt\":".length();
+        int startUpdate = json.indexOf("\"updatedAt\":") + "\"updatedAt\":".length();
         int endUpdate = json.indexOf("\"", startUpdate + 1);
         LocalDateTime updateAt = LocalDateTime.parse(json.substring(startUpdate + 1, endUpdate));
 
@@ -79,19 +77,23 @@ public class JsonStorage {
         return task;
     }
 
-    public List<Task> loadAll() throws IOException{
+    public List<Task> loadAll() throws IOException {
         Path path = Paths.get("tasks.json");
         List<Task> tasks = new ArrayList<>();
-        if (Files.notExists(path)){
-            throw new FileNotFoundException("File not found");
+        if (Files.notExists(path)) {
+            return tasks;
         }
-        List<String> strings = Files.readAllLines(path);
-        for (String string : strings) {
-            Task task = taskFromJson(string);
+        String content = new String(Files.readAllBytes(path));
+        int pos = 0;
+        while (content.indexOf("{", pos) != -1) {
+            int start = content.indexOf("{", pos);
+            int end = content.indexOf("}", start);
+            String json = content.substring(start, end + 1);
+            Task task = taskFromJson(json);
             tasks.add(task);
+            pos = end + 1;
         }
         return tasks;
-
     }
 
 }
