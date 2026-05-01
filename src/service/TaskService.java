@@ -3,6 +3,7 @@ package service;
 import model.Task;
 import repository.JsonStorage;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,6 +11,15 @@ public class TaskService {
 
     List<Task> tasks = new ArrayList<>();
     JsonStorage js = new JsonStorage();
+
+    public TaskService(){
+        try {
+            tasks = js.loadAll();
+
+        }catch (IOException e){
+            System.out.println("Erro loading data " + e.getMessage());
+        }
+    }
 
     public void addTask(String description) {
         tasks.add(new Task(description, nextId()));
@@ -40,7 +50,7 @@ public class TaskService {
     public void markInProgress(int id) {
         for (Task task : tasks) {
             if (task.getId() == id) {
-                task.getStatus("in-progress");
+                task.setStatus("in-progress");
                 System.out.println("task successfully marked");
                 return;
             }
@@ -51,7 +61,7 @@ public class TaskService {
     public void markIDone(int id) {
         for (Task task : tasks) {
             if (task.getId() == id) {
-                task.getStatus("done");
+                task.setStatus("done");
                 System.out.println("task successfully marked");
                 return;
             }

@@ -52,8 +52,8 @@ public class Task {
         return status;
     }
 
-    public void getStatus(String staus) {
-        this.status = staus;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public LocalDateTime getCreatedAt() {
