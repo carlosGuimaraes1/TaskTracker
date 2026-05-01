@@ -1,124 +1,101 @@
-# Task Tracker CLI
+# 🧠 Task Tracker CLI
 
-A simple command-line interface to track and manage your tasks. Built with pure Java and no external libraries.
+A simple yet well-structured **task management system via command line**, built with Java, focusing on clean architecture, data persistence, and core backend concepts.
 
-## Technologies
+This project was designed to simulate real-world backend responsibilities such as **CRUD operations, data persistence, and separation of concerns**, without relying on external frameworks.
 
-- Java 17+
-- JSON (manual parsing — no external libraries)
-- Native File System (`java.nio.file`)
+---
 
-## Project Structure
+## 🎯 Purpose
 
-```
-task-tracker/
-├── src/
-│   └── main/
-│       └── java/
-│           └── com/
-│               └── tasktracker/
-│                   ├── Main.java
-│                   ├── model/
-│                   │   └── Task.java
-│                   ├── repository/
-│                   │   └── JsonStorage.java
-│                   ├── service/
-│                   │   └── TaskService.java
-│                   └── cli/
-│                       └── CommandHandler.java
-├── tasks.json
-└── README.md
-```
+This project goes beyond a simple CLI.
 
-## How to Run
+It demonstrates:
 
-**1. Clone the repository**
+- How a backend application is structured internally
+- How to persist data without databases
+- How to separate responsibilities across layers
+- How to design maintainable and scalable code
+
+---
+
+## 🛠️ Technologies
+
+- **Java 17+**
+- **File System (java.nio.file)**
+- **JSON (manual parsing)**
+- **CLI (Command-Line Interface)**
+
+---
+
+## 🏗️ Architecture
+
+The project follows a layered architecture:
+
+
+com.tasktracker
+├── cli → Handles user input (commands)
+├── service → Business rules
+├── repository → Data persistence (JSON file)
+├── model → Domain entities
+
+
+This separation improves:
+
+- Maintainability  
+- Testability  
+- Scalability  
+
+---
+
+## ⚙️ Features
+
+- ✅ Create tasks  
+- ✅ Update tasks  
+- ✅ Delete tasks  
+- ✅ Mark tasks as *in progress* or *done*  
+- ✅ List all tasks  
+- ✅ Filter tasks by status  
+- ✅ Persistent storage using JSON file  
+
+---
+
+## 📦 How It Works
+
+- Tasks are stored in a local `tasks.json` file  
+- The system automatically:
+  - Creates the file if it doesn't exist  
+  - Generates unique IDs  
+  - Updates timestamps (`createdAt`, `updatedAt`)  
+
+---
+
+## ▶️ Running the Project
+
+### 1. Clone the repository
+
 ```bash
-git clone https://github.com/your-username/task-tracker.git
-cd task-tracker
-```
-
-**2. Compile**
-```bash
+git clone https://github.com/carlosGuimaraes1/TaskTracker.git
+cd TaskTracker
+2. Compile
 javac -d out src/main/java/com/tasktracker/**/*.java
-```
-
-**3. Run**
-```bash
-java -cp out com.tasktracker.Main <command> [arguments]
-```
-
-## Commands
-
-### Add a task
-```bash
-java -cp out com.tasktracker.Main add "Buy groceries"
-# Output: Task added successfully (ID: 1)
-```
-
-### Update a task
-```bash
-java -cp out com.tasktracker.Main update 1 "Buy groceries and cook dinner"
-```
-
-### Delete a task
-```bash
-java -cp out com.tasktracker.Main delete 1
-```
-
-### Mark as in progress
-```bash
-java -cp out com.tasktracker.Main mark-in-progress 1
-```
-
-### Mark as done
-```bash
-java -cp out com.tasktracker.Main mark-done 1
-```
-
-### List all tasks
-```bash
+3. Run commands
+java -cp out com.tasktracker.Main add "Study Java"
 java -cp out com.tasktracker.Main list
-```
-
-### List by status
-```bash
-java -cp out com.tasktracker.Main list todo
-java -cp out com.tasktracker.Main list in-progress
-java -cp out com.tasktracker.Main list done
-```
-
-## Task Properties
-
-Each task is stored in `tasks.json` with the following fields:
-
-| Property      | Type   | Description                          |
-|---------------|--------|--------------------------------------|
-| `id`          | int    | Unique identifier                    |
-| `description` | String | Short description of the task        |
-| `status`      | String | `todo`, `in-progress` or `done`      |
-| `createdAt`   | String | Date and time when task was created  |
-| `updatedAt`   | String | Date and time of the last update     |
-
-Example `tasks.json`:
-```json
-[
-  {
-    "id": 1,
-    "description": "Buy groceries",
-    "status": "todo",
-    "createdAt": "2026-04-29T10:00:00",
-    "updatedAt": "2026-04-29T10:00:00"
-  }
-]
-```
-
-## Technical Decisions
-
-- **JSON persistence:** Tasks are stored in a `tasks.json` file created automatically on first run. JSON is parsed manually using `String.indexOf()` and `String.substring()` — no external libraries used.
-- **ID generation:** The next ID is calculated by finding the highest existing ID in the list and adding 1.
-- **Architecture:** The project follows a layered architecture separating model, storage, service, and CLI concerns.
-
-## Author
-
-Carlos — [GitHub](https://github.com/your-username)
+💻 Available Commands
+Command	Description
+add "task"	Create a new task
+update <id> "task"	Update a task
+delete <id>	Delete a task
+mark-in-progress <id>	Set task as in progress
+mark-done <id>	Set task as done
+list	List all tasks
+list done	Filter by status
+📄 Task Structure
+{
+  "id": 1,
+  "description": "Study Java",
+  "status": "todo",
+  "createdAt": "2026-04-29T10:00:00",
+  "updatedAt": "2026-04-29T10:00:00"
+}
