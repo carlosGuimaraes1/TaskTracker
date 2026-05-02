@@ -28,10 +28,12 @@ public class CommandHandler {
                     handleMarkDone(args[1]);
                     break;
                 case "list":
-                    taskService.listAllTask();
+                    if (args.length>1){
+                        taskService.listByStatus(args[1]);
+                    }else{
+                        taskService.listAllTask();
+                    }
                     break;
-                case "list done":
-                    taskService.listByStatus(args[1]);
                 default:
                     throw new IllegalArgumentException("Command not found");
             }
